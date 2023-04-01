@@ -1,3 +1,5 @@
+import GeniallyInvalidDescription from "./GeniallyInvalidDescription";
+
 export default class GeniallyDescription {
   private static readonly MAX_LENGTH = 125;
   _description: string;
@@ -9,7 +11,7 @@ export default class GeniallyDescription {
 
   private validateDescription(description: string) {
     if (description.length > GeniallyDescription.MAX_LENGTH) {
-      throw new Error("Incorrect description length");
+      throw new GeniallyInvalidDescription(description.length);
     }
   }
 

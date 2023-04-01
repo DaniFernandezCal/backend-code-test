@@ -3,6 +3,8 @@ import faker from "faker";
 import CreateGeniallyService from "../../../../../src/contexts/core/genially/application/CreateGeniallyService";
 import GeniallyRepository from "../../../../../src/contexts/core/genially/domain/GeniallyRepository";
 import InMemoryGeniallyRepository from "../../../../../src/contexts/core/genially/infrastructure/InMemoryGeniallyRepository";
+import GeniallyInvalidName from "../../../../../src/contexts/core/genially/domain/GeniallyInvalidName";
+import GeniallyInvalidDescription from "../../../../../src/contexts/core/genially/domain/GeniallyInvalidDescription";
 
 describe("CreateGeniallyService unit test", () => {
   let createGeniallyService: CreateGeniallyService;
@@ -38,7 +40,7 @@ describe("CreateGeniallyService unit test", () => {
       description: faker.datatype.string(25),
     };
     await expect(createGeniallyService.execute(geniallyData)).rejects.toThrow(
-      Error
+      GeniallyInvalidName
     );
   });
 
@@ -49,7 +51,7 @@ describe("CreateGeniallyService unit test", () => {
       description: faker.datatype.string(25),
     };
     await expect(createGeniallyService.execute(geniallyData)).rejects.toThrow(
-      Error
+      GeniallyInvalidName
     );
   });
 
@@ -60,7 +62,7 @@ describe("CreateGeniallyService unit test", () => {
       description: faker.datatype.string(150),
     };
     await expect(createGeniallyService.execute(geniallyData)).rejects.toThrow(
-      Error
+      GeniallyInvalidDescription
     );
   });
 });

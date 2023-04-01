@@ -1,3 +1,5 @@
+import GeniallyInvalidName from "./GeniallyInvalidName";
+
 export default class GeniallyName {
   private static readonly MAX_LENGTH = 20;
   private static readonly MIN_LENGTH = 3;
@@ -13,7 +15,7 @@ export default class GeniallyName {
       name.length > GeniallyName.MAX_LENGTH ||
       name.length < GeniallyName.MIN_LENGTH
     ) {
-      throw new Error("Incorrect name length");
+      throw new GeniallyInvalidName(name.length);
     }
   }
 
