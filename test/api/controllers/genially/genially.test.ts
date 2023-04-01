@@ -42,4 +42,13 @@ describe("POST /genially", () => {
 
     await request(app).post("/genially").send(body).expect(400);
   });
+
+  it("when name is not send should throw a 400", async () => {
+    const body = {
+      id: faker.datatype.uuid(),
+      description: faker.datatype.string(25),
+    };
+
+    await request(app).post("/genially").send(body).expect(400);
+  });
 });
