@@ -1,4 +1,4 @@
-import { v4 as uuidv4 } from "uuid";
+import faker from "faker";
 
 import CreateGeniallyService from "../../../../../src/contexts/core/genially/application/CreateGeniallyService";
 import GeniallyRepository from "../../../../../src/contexts/core/genially/domain/GeniallyRepository";
@@ -15,9 +15,9 @@ describe("CreateGeniallyService unit test", () => {
 
   it("should be possible to create a new genially", async () => {
     const geniallyData = {
-      id: uuidv4(),
-      name: "name",
-      description: "descrition",
+      id: faker.datatype.uuid(),
+      name: faker.datatype.string(5),
+      description: faker.datatype.string(25),
     };
 
     await createGeniallyService.execute(geniallyData);
