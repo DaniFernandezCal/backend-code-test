@@ -24,8 +24,43 @@ describe("CreateGeniallyService unit test", () => {
 
     const createadGenially = await geniallyRepository.find(geniallyData.id);
     expect(createadGenially.id).toBe(geniallyData.id);
-    expect(createadGenially.name).toBe(geniallyData.name);
-    expect(createadGenially.description).toBe(geniallyData.description);
+    expect(createadGenially.name.name).toBe(geniallyData.name);
+    expect(createadGenially.description.description).toBe(
+      geniallyData.description
+    );
     expect(createadGenially.createdAt).toBeDefined();
+  });
+
+  it("should throw an error when used name has lower length than the allowed minimun", async () => {
+    const geniallyData = {
+      id: faker.datatype.uuid(),
+      name: faker.datatype.string(2),
+      description: faker.datatype.string(25),
+    };
+    await expect(createGeniallyService.execute(geniallyData)).rejects.toThrow(
+      Error
+    );
+  });
+
+  it("should throw an error when used name has greater length than the allowed maximun", async () => {
+    const geniallyData = {
+      id: faker.datatype.uuid(),
+      name: faker.datatype.string(21),
+      description: faker.datatype.string(25),
+    };
+    await expect(createGeniallyService.execute(geniallyData)).rejects.toThrow(
+      Error
+    );
+  });
+
+  it("should throw an error when used description has incorrect length", async () => {
+    const geniallyData = {
+      id: faker.datatype.uuid(),
+      name: faker.datatype.string(5),
+      description: faker.datatype.string(150),
+    };
+    await expect(createGeniallyService.execute(geniallyData)).rejects.toThrow(
+      Error
+    );
   });
 });
