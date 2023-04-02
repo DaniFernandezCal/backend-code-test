@@ -11,7 +11,7 @@ export default class RenameGeniallyController {
       await this.renameGeniallyService.execute(geniallyId, name);
       res.status(204).send();
     } catch (e) {
-      const statusCode = e.statusCode | 400;
+      const statusCode = e.statusCode || 500;
       res.status(statusCode).send({ error: e.message });
     }
   }

@@ -49,6 +49,6 @@ describe("POST /genially", () => {
       description: faker.datatype.string(25),
     };
 
-    await request(app).post("/genially").send(body).expect(400);
+    await request(app).post("/genially").send(body).expect(500);
   });
 });

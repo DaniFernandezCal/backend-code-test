@@ -10,7 +10,7 @@ export default class DeleteGeniallyController {
       await this.deleteGeniallyService.execute(geniallyId);
       res.status(204).send();
     } catch (e) {
-      const statusCode = e.statusCode | 400;
+      const statusCode = e.statusCode || 500;
       res.status(statusCode).send({ error: e.message });
     }
   }

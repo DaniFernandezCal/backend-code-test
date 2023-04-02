@@ -10,7 +10,8 @@ export default class CreateGeniallyController {
       await this.createGeniallyService.execute(geaniallyData);
       res.status(201).send();
     } catch (e) {
-      res.status(400).send({ error: e.message });
+      const statusCode = e.statusCode || 500;
+      res.status(statusCode).send({ error: e.message });
     }
   }
 }
