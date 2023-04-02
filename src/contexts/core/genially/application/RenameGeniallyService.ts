@@ -1,4 +1,3 @@
-import Genially from "../domain/Genially";
 import GeniallyName from "../domain/GeniallyName";
 import GeniallyNotExist from "../domain/GeniallyNotExist";
 import GeniallyRepository from "../domain/GeniallyRepository";

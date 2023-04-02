@@ -6,13 +6,13 @@ import lusca from "lusca";
 // Controllers (route handlers)
 import * as healthController from "./controllers/health";
 import CreateGeniallyController from "./controllers/createGeniallyController";
-import CreateGeniallyService from "../../src/contexts/core/genially/application/CreateGeniallyService";
+import CreateGeniallyService from "../contexts/core/genially/application/CreateGeniallyService";
 import DeleteGeniallyController from "./controllers/deleteGeniallyController";
-import DeleteGeniallyService from "../../src/contexts/core/genially/application/DeleteGeniallyService";
-import RenameGeniallyService from "../../src/contexts/core/genially/application/RenameGeniallyService";
+import DeleteGeniallyService from "../contexts/core/genially/application/DeleteGeniallyService";
+import RenameGeniallyService from "../contexts/core/genially/application/RenameGeniallyService";
 import RenameGeniallyController from "./controllers/renameGeniallyController";
-import SharedMongoClient from "../../src/contexts/core/shared/infrastructure/SharedMongoClient";
-import MongoDBGeniallyRepository from "../../src/contexts/core/genially/infrastructure/MongoDBGeniallyRepository";
+import SharedMongoClient from "..//contexts/core/shared/infrastructure/SharedMongoClient";
+import MongoDBGeniallyRepository from "../contexts/core/genially/infrastructure/MongoDBGeniallyRepository";
 
 const app = express();
 
