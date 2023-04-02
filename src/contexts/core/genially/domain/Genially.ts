@@ -43,4 +43,8 @@ export default class Genially {
   get deletedAt(): Date {
     return this._deletedAt;
   }
+
+  public delete(): void {
+    this._deletedAt = new Date();
+  }
 }
