@@ -5,6 +5,27 @@ import lusca from "lusca";
 
 // Controllers (route handlers)
 import * as healthController from "./controllers/health";
+import InMemoryGeniallyRepository from "../../src/contexts/core/genially/infrastructure/InMemoryGeniallyRepository";
+import CreateGeniallyController from "./controllers/createGeniallyController";
+import CreateGeniallyService from "../../src/contexts/core/genially/application/CreateGeniallyService";
+import DeleteGeniallyController from "./controllers/deleteGeniallyController";
+import DeleteGeniallyService from "../../src/contexts/core/genially/application/DeleteGeniallyService";
+import RenameGeniallyService from "../../src/contexts/core/genially/application/RenameGeniallyService";
+import RenameGeniallyController from "./controllers/renameGeniallyController";
+
+const geniallyRepository = new InMemoryGeniallyRepository();
+const createGeniallyService = new CreateGeniallyService(geniallyRepository);
+const createGeniallyController = new CreateGeniallyController(
+  createGeniallyService
+);
+const deleteGeniallyService = new DeleteGeniallyService(geniallyRepository);
+const deleteGeniallyController = new DeleteGeniallyController(
+  deleteGeniallyService
+);
+const renameGeniallyService = new RenameGeniallyService(geniallyRepository);
+const renameGeniallyController = new RenameGeniallyController(
+  renameGeniallyService
+);
 
 // Create Express server
 const app = express();
@@ -16,8 +37,19 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(lusca.xframe("SAMEORIGIN"));
 app.use(lusca.xssProtection(true));
-
 // Primary app routes
 app.get("/", healthController.check);
+app.post(
+  "/genially",
+  createGeniallyController.createGenially.bind(createGeniallyController)
+);
+app.delete(
+  "/genially/:geniallyId",
+  deleteGeniallyController.deleteGenially.bind(deleteGeniallyController)
+);
+app.patch(
+  "/genially/:geniallyId",
+  renameGeniallyController.renameGenially.bind(renameGeniallyController)
+);
 
 export default app;
