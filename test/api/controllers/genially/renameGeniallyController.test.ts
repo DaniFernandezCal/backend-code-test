@@ -2,8 +2,20 @@ import request from "supertest";
 import faker from "faker";
 
 import app from "../../../../src/api/app";
+import SharedMongoClient from "../../../../src/contexts/core/shared/infrastructure/SharedMongoClient";
 
 describe("PATCH /genially/:{geniallyId}", () => {
+  let sharedMongoClient: SharedMongoClient;
+  const collection = "genially";
+
+  beforeAll(async () => {
+    sharedMongoClient = SharedMongoClient.of();
+  });
+
+  afterAll(async () => {
+    await sharedMongoClient.dropCollection(collection);
+  });
+
   it("when genially doesnt exist should throw an error", async () => {
     await request(app)
       .patch("/genially/unnexistentGeniallyId")
