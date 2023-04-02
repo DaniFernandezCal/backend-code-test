@@ -5,15 +5,19 @@ import lusca from "lusca";
 
 // Controllers (route handlers)
 import * as healthController from "./controllers/health";
-import InMemoryGeniallyRepository from "../../src/contexts/core/genially/infrastructure/InMemoryGeniallyRepository";
 import CreateGeniallyController from "./controllers/createGeniallyController";
 import CreateGeniallyService from "../../src/contexts/core/genially/application/CreateGeniallyService";
 import DeleteGeniallyController from "./controllers/deleteGeniallyController";
 import DeleteGeniallyService from "../../src/contexts/core/genially/application/DeleteGeniallyService";
 import RenameGeniallyService from "../../src/contexts/core/genially/application/RenameGeniallyService";
 import RenameGeniallyController from "./controllers/renameGeniallyController";
+import SharedMongoClient from "../../src/contexts/core/shared/infrastructure/SharedMongoClient";
+import MongoDBGeniallyRepository from "../../src/contexts/core/genially/infrastructure/MongoDBGeniallyRepository";
 
-const geniallyRepository = new InMemoryGeniallyRepository();
+const app = express();
+
+const sharedMongoClient = SharedMongoClient.of();
+const geniallyRepository = new MongoDBGeniallyRepository(sharedMongoClient);
 const createGeniallyService = new CreateGeniallyService(geniallyRepository);
 const createGeniallyController = new CreateGeniallyController(
   createGeniallyService
@@ -28,7 +32,6 @@ const renameGeniallyController = new RenameGeniallyController(
 );
 
 // Create Express server
-const app = express();
 
 // Express configuration
 app.set("port", process.env.PORT || 3000);

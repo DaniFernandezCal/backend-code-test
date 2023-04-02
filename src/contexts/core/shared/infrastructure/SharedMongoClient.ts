@@ -18,4 +18,8 @@ export default class SharedMongoClient {
   public db(): Db {
     return this.mongoClient.db();
   }
+
+  public async dropCollection(collection: string): Promise<void> {
+    await this.db().dropCollection(collection);
+  }
 }
