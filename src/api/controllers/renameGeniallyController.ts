@@ -4,7 +4,7 @@ import RenameGeniallyService from "../../contexts/core/genially/application/Rena
 export default class RenameGeniallyController {
   constructor(private readonly renameGeniallyService: RenameGeniallyService) {}
 
-  public async deleteGenially(req: Request, res: Response) {
+  public async renameGenially(req: Request, res: Response) {
     const geniallyId = req.params.geniallyId;
     const name = req.body.name;
     try {

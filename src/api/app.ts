@@ -5,11 +5,13 @@ import lusca from "lusca";
 
 // Controllers (route handlers)
 import * as healthController from "./controllers/health";
+import InMemoryGeniallyRepository from "../../src/contexts/core/genially/infrastructure/InMemoryGeniallyRepository";
 import CreateGeniallyController from "./controllers/createGeniallyController";
 import CreateGeniallyService from "../../src/contexts/core/genially/application/CreateGeniallyService";
 import DeleteGeniallyController from "./controllers/deleteGeniallyController";
-import InMemoryGeniallyRepository from "../../src/contexts/core/genially/infrastructure/InMemoryGeniallyRepository";
 import DeleteGeniallyService from "../../src/contexts/core/genially/application/DeleteGeniallyService";
+import RenameGeniallyService from "../../src/contexts/core/genially/application/RenameGeniallyService";
+import RenameGeniallyController from "./controllers/renameGeniallyController";
 
 const geniallyRepository = new InMemoryGeniallyRepository();
 const createGeniallyService = new CreateGeniallyService(geniallyRepository);
@@ -19,6 +21,10 @@ const createGeniallyController = new CreateGeniallyController(
 const deleteGeniallyService = new DeleteGeniallyService(geniallyRepository);
 const deleteGeniallyController = new DeleteGeniallyController(
   deleteGeniallyService
+);
+const renameGeniallyService = new RenameGeniallyService(geniallyRepository);
+const renameGeniallyController = new RenameGeniallyController(
+  renameGeniallyService
 );
 
 // Create Express server
@@ -40,6 +46,10 @@ app.post(
 app.delete(
   "/genially/:geniallyId",
   deleteGeniallyController.deleteGenially.bind(deleteGeniallyController)
+);
+app.patch(
+  "/genially/:geniallyId",
+  renameGeniallyController.renameGenially.bind(renameGeniallyController)
 );
 
 export default app;
