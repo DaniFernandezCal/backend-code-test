@@ -1,5 +1,5 @@
-import { EventEmitter } from "stream";
-import { GeniallyCreatedEvent } from "../../genially/domain/GeniallyCreatedDomainEvent";
+import { EventEmitter } from "events";
+import { DomainEvent } from "../domain/DomainEvent";
 
 export default class DomainEventBus {
   private readonly emitter: EventEmitter;
@@ -10,19 +10,19 @@ export default class DomainEventBus {
 
   public subscribe(
     eventName: string,
-    listener: (event: GeniallyCreatedEvent) => void
+    listener: (event: DomainEvent<unknown>) => void
   ) {
     this.emitter.on(eventName, listener);
   }
 
   public unsubscribe(
     eventName: string,
-    listener: (event: GeniallyCreatedEvent) => void
+    listener: (event: DomainEvent<unknown>) => void
   ) {
     this.emitter.off(eventName, listener);
   }
 
-  public publish(event: GeniallyCreatedEvent) {
+  public publish(event: DomainEvent<unknown>) {
     this.emitter.emit(event.type, event);
   }
 }
