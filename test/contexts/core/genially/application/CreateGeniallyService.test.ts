@@ -5,17 +5,34 @@ import GeniallyRepository from "../../../../../src/contexts/core/genially/domain
 import InMemoryGeniallyRepository from "../../../../../src/contexts/core/genially/infrastructure/InMemoryGeniallyRepository";
 import GeniallyInvalidName from "../../../../../src/contexts/core/genially/domain/GeniallyInvalidName";
 import GeniallyInvalidDescription from "../../../../../src/contexts/core/genially/domain/GeniallyInvalidDescription";
+import DomainEventBus from "../../../../../src/contexts/core/shared/infrastructure/DomainEventBus";
+
+const eventBusMock = {
+  subscribe: jest.fn(),
+  unsubscribe: jest.fn(),
+  publish: jest.fn(),
+};
 
 describe("CreateGeniallyService unit test", () => {
   let createGeniallyService: CreateGeniallyService;
   let geniallyRepository: GeniallyRepository;
+  let eventBus: DomainEventBus;
 
   beforeAll(() => {
     geniallyRepository = new InMemoryGeniallyRepository();
-    createGeniallyService = new CreateGeniallyService(geniallyRepository);
+    eventBus = {
+      subscribe: jest.fn(),
+      unsubscribe: jest.fn(),
+      publish: jest.fn(),
+    } as unknown as DomainEventBus;
+    createGeniallyService = new CreateGeniallyService(
+      geniallyRepository,
+      eventBus
+    );
   });
 
   it("should be possible to create a new genially", async () => {
+    const spy = jest.spyOn(eventBus, "publish");
     const geniallyData = {
       id: faker.datatype.uuid(),
       name: faker.datatype.string(5),
@@ -31,6 +48,7 @@ describe("CreateGeniallyService unit test", () => {
       geniallyData.description
     );
     expect(createadGenially.createdAt).toBeDefined();
+    expect(spy).toBeCalledTimes(1);
   });
 
   it("should throw an error when used name has lower length than the allowed minimun", async () => {

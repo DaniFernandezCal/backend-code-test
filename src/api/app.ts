@@ -13,12 +13,19 @@ import RenameGeniallyService from "../contexts/core/genially/application/RenameG
 import RenameGeniallyController from "./controllers/renameGeniallyController";
 import SharedMongoClient from "..//contexts/core/shared/infrastructure/SharedMongoClient";
 import MongoDBGeniallyRepository from "../contexts/core/genially/infrastructure/MongoDBGeniallyRepository";
+import MongoDBCounterRepository from "../contexts/core/counter/infrastructure/MongoDBCounterRepository";
+import DomainEventBus from "../contexts/core/shared/infrastructure/DomainEventBus";
+import CounterService from "../contexts/core/counter/application/CounterService";
 
 const app = express();
 
 const sharedMongoClient = SharedMongoClient.of();
 const geniallyRepository = new MongoDBGeniallyRepository(sharedMongoClient);
-const createGeniallyService = new CreateGeniallyService(geniallyRepository);
+const domainEventBus = new DomainEventBus();
+const createGeniallyService = new CreateGeniallyService(
+  geniallyRepository,
+  domainEventBus
+);
 const createGeniallyController = new CreateGeniallyController(
   createGeniallyService
 );
@@ -30,6 +37,9 @@ const renameGeniallyService = new RenameGeniallyService(geniallyRepository);
 const renameGeniallyController = new RenameGeniallyController(
   renameGeniallyService
 );
+const counterRepository = new MongoDBCounterRepository(sharedMongoClient);
+const counterService = new CounterService(counterRepository, domainEventBus);
+counterService.start();
 
 // Create Express server
 
