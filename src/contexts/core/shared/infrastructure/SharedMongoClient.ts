@@ -1,25 +1,25 @@
 import { MongoClient, Db } from "mongodb";
 import * as dotenv from "dotenv";
+import MongoConfigProvider from "./ConfigProvider";
 
 dotenv.config();
 
 export default class SharedMongoClient {
-  private constructor(private readonly mongoClient: MongoClient) {}
+  private constructor(private readonly _db: Db) {}
 
   public static of(): SharedMongoClient {
-    const mongoURL = process.env.MONGODB_URL;
-    const port = process.env.MONGODB_PORT;
-    const database = process.env.MONGODB_DATABASE;
-    const connectionString = `mongodb://${mongoURL}:${port}/${database}`;
+    const mongoConfig = new MongoConfigProvider().config();
+    const connectionString = `mongodb://${mongoConfig.mongoUrl}:${mongoConfig.port}/${mongoConfig.database}`;
     const mongoClient = new MongoClient(connectionString);
-    return new SharedMongoClient(mongoClient);
+    const db = mongoClient.db();
+    return new SharedMongoClient(db);
   }
 
   public db(): Db {
-    return this.mongoClient.db();
+    return this._db;
   }
 
   public async dropCollection(collection: string): Promise<void> {
-    await this.db().dropCollection(collection);
+    await this._db.dropCollection(collection);
   }
 }
