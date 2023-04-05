@@ -24,11 +24,11 @@ describe("MongoDBGeniallyRepository integration test", () => {
 
   it("should be possible to save genially", async () => {
     const uuid = faker.datatype.uuid();
-    const genially = new Genially(
-      new Uuid(uuid),
-      new GeniallyName(faker.datatype.string(5)),
-      new GeniallyDescription(faker.datatype.string(25))
-    );
+    const genially = new Genially({
+      id: new Uuid(uuid),
+      name: new GeniallyName(faker.datatype.string(5)),
+      description: new GeniallyDescription(faker.datatype.string(25)),
+    });
 
     await mongoDBRepository.save(genially);
     const persistedGenillay = await collection.findOne({ id: genially.id });
@@ -45,11 +45,11 @@ describe("MongoDBGeniallyRepository integration test", () => {
 
     beforeEach(async () => {
       uuid = faker.datatype.uuid();
-      createdGenially = new Genially(
-        new Uuid(uuid),
-        new GeniallyName(faker.datatype.string(5)),
-        new GeniallyDescription(faker.datatype.string(25))
-      );
+      createdGenially = new Genially({
+        id: new Uuid(uuid),
+        name: new GeniallyName(faker.datatype.string(5)),
+        description: new GeniallyDescription(faker.datatype.string(25)),
+      });
       await mongoDBRepository.save(createdGenially);
     });
 

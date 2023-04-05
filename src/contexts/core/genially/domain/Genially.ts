@@ -19,14 +19,21 @@ export default class Genially {
   private _modifiedAt: Date;
   private _deletedAt: Date;
 
-  constructor(
-    id: Uuid,
-    name: GeniallyName,
-    description?: GeniallyDescription,
-    createdAt?: Date,
-    deletedAt?: Date,
-    modifiedAt?: Date
-  ) {
+  constructor({
+    id,
+    name,
+    description,
+    createdAt,
+    deletedAt,
+    modifiedAt,
+  }: {
+    id: Uuid;
+    name: GeniallyName;
+    description?: GeniallyDescription;
+    createdAt?: Date;
+    deletedAt?: Date;
+    modifiedAt?: Date;
+  }) {
     this._id = id;
     this._name = name;
     this._description = description;
@@ -80,13 +87,13 @@ export default class Genially {
   }
 
   public static fromDTO(geniallyDTO: GeniallyDTO): Genially {
-    return new Genially(
-      geniallyDTO.id,
-      new GeniallyName(geniallyDTO.name),
-      new GeniallyDescription(geniallyDTO.description),
-      geniallyDTO.createdAt,
-      geniallyDTO.deletedAt,
-      geniallyDTO.modifiedAt
-    );
+    return new Genially({
+      id: geniallyDTO.id,
+      name: new GeniallyName(geniallyDTO.name),
+      description: new GeniallyDescription(geniallyDTO.description),
+      createdAt: geniallyDTO.createdAt,
+      deletedAt: geniallyDTO.deletedAt,
+      modifiedAt: geniallyDTO.modifiedAt,
+    });
   }
 }

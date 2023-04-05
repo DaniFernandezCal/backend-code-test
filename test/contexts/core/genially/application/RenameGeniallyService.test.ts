@@ -33,11 +33,11 @@ describe("DeleteGeniallyService unit test", () => {
     let uuid: string;
     beforeAll(async () => {
       uuid = faker.datatype.uuid();
-      createdGenially = new Genially(
-        new Uuid(uuid),
-        new GeniallyName(faker.datatype.string(5)),
-        new GeniallyDescription(faker.datatype.string(25))
-      );
+      createdGenially = new Genially({
+        id: new Uuid(uuid),
+        name: new GeniallyName(faker.datatype.string(5)),
+        description: new GeniallyDescription(faker.datatype.string(25)),
+      });
       geniallyRepository.save(createdGenially);
     });
 

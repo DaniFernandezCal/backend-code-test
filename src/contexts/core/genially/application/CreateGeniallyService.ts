@@ -27,11 +27,11 @@ export default class CreateGeniallyService {
     const geniallyName = new GeniallyName(name);
     const geniallyDescription = new GeniallyDescription(description);
 
-    const genially = new Genially(
-      new Uuid(id),
-      geniallyName,
-      geniallyDescription
-    );
+    const genially = new Genially({
+      id: new Uuid(id),
+      name: geniallyName,
+      description: geniallyDescription,
+    });
 
     await this.repository.save(genially);
 
