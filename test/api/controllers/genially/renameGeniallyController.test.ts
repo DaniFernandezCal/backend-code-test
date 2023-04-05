@@ -18,7 +18,7 @@ describe("PATCH /genially/:{geniallyId}", () => {
 
   it("when genially doesnt exist should throw an error", async () => {
     await request(app)
-      .patch("/genially/unnexistentGeniallyId")
+      .patch(`/genially/${faker.datatype.uuid()}`)
       .send()
       .expect(404);
   });

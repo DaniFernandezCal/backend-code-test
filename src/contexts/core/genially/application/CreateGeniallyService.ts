@@ -7,6 +7,7 @@ import {
   GeniallyCreatedEventPayload,
 } from "../domain/GeniallyCreatedDomainEvent";
 import DomainEventBus from "../../shared/infrastructure/DomainEventBus";
+import { Uuid } from "../../shared/domain/Uuid";
 
 type CreateGeniallyServiceRequest = {
   id: string;
@@ -26,7 +27,11 @@ export default class CreateGeniallyService {
     const geniallyName = new GeniallyName(name);
     const geniallyDescription = new GeniallyDescription(description);
 
-    const genially = new Genially(id, geniallyName, geniallyDescription);
+    const genially = new Genially(
+      new Uuid(id),
+      geniallyName,
+      geniallyDescription
+    );
 
     await this.repository.save(genially);
 

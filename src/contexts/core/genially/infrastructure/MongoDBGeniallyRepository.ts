@@ -1,3 +1,4 @@
+import { Uuid } from "../../shared/domain/Uuid";
 import SharedMongoClient from "../../shared/infrastructure/SharedMongoClient";
 import Genially, { GeniallyDTO } from "../domain/Genially";
 import GeniallyRepository from "../domain/GeniallyRepository";
@@ -17,7 +18,7 @@ export default class MongoDBGeniallyRepository implements GeniallyRepository {
         { upsert: true }
       );
   }
-  async find(id: string): Promise<Genially> {
+  async find(id: Uuid): Promise<Genially> {
     const obtainedGenially = await this.mongoClient
       .db()
       .collection(MongoDBGeniallyRepository.COLLECTION)
@@ -27,7 +28,7 @@ export default class MongoDBGeniallyRepository implements GeniallyRepository {
     }
     return undefined;
   }
-  delete(id: string): Promise<void> {
+  delete(id: Uuid): Promise<void> {
     throw new Error("Method not implemented.");
   }
 }

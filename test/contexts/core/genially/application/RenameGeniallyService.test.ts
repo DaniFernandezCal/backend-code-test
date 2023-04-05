@@ -8,6 +8,7 @@ import GeniallyName from "../../../../../src/contexts/core/genially/domain/Genia
 import GeniallyDescription from "../../../../../src/contexts/core/genially/domain/GeniallyDescription";
 import Genially from "../../../../../src/contexts/core/genially/domain/Genially";
 import GeniallyInvalidName from "../../../../../src/contexts/core/genially/domain/GeniallyInvalidName";
+import { Uuid } from "../../../../../src/contexts/core/shared/domain/Uuid";
 
 describe("DeleteGeniallyService unit test", () => {
   let renameGeniallyservice: RenameGeniallyService;
@@ -21,7 +22,7 @@ describe("DeleteGeniallyService unit test", () => {
   it("when genially not exist should throw an error", async () => {
     await expect(
       renameGeniallyservice.execute(
-        "unnexistentGeniallyId",
+        faker.datatype.uuid(),
         faker.datatype.string(5)
       )
     ).rejects.toThrow(GeniallyNotExist);
@@ -29,9 +30,11 @@ describe("DeleteGeniallyService unit test", () => {
 
   describe("given genially created", () => {
     let createdGenially: Genially;
+    let uuid: string;
     beforeAll(async () => {
+      uuid = faker.datatype.uuid();
       createdGenially = new Genially(
-        faker.datatype.uuid(),
+        new Uuid(uuid),
         new GeniallyName(faker.datatype.string(5)),
         new GeniallyDescription(faker.datatype.string(25))
       );
@@ -40,7 +43,7 @@ describe("DeleteGeniallyService unit test", () => {
 
     it("when genially name is updated modifiedAt and name should be updated", async () => {
       const newName = faker.datatype.string(10);
-      await renameGeniallyservice.execute(createdGenially.id, newName);
+      await renameGeniallyservice.execute(uuid, newName);
       const updatedGenially = await geniallyRepository.find(createdGenially.id);
       expect(updatedGenially.modifiedAt).toBeDefined();
       expect(updatedGenially.name.name).toBe(newName);
@@ -49,7 +52,7 @@ describe("DeleteGeniallyService unit test", () => {
     it("when new name doesnt meet the length criteria should throw an error", async () => {
       const newName = faker.datatype.string(25);
       await expect(
-        renameGeniallyservice.execute(createdGenially.id, newName)
+        renameGeniallyservice.execute(uuid, newName)
       ).rejects.toThrow(GeniallyInvalidName);
     });
   });

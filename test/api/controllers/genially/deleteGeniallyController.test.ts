@@ -18,7 +18,7 @@ describe("DELETE /genially/:{geniallyId}", () => {
 
   it("when genially doesnt exist should throw an error", async () => {
     await request(app)
-      .delete("/genially/unnexistentGeniallyId")
+      .delete(`/genially/${faker.datatype.uuid()}`)
       .send()
       .expect(404);
   });

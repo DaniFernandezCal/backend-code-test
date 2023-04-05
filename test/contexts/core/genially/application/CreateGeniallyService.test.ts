@@ -6,6 +6,8 @@ import InMemoryGeniallyRepository from "../../../../../src/contexts/core/geniall
 import GeniallyInvalidName from "../../../../../src/contexts/core/genially/domain/GeniallyInvalidName";
 import GeniallyInvalidDescription from "../../../../../src/contexts/core/genially/domain/GeniallyInvalidDescription";
 import DomainEventBus from "../../../../../src/contexts/core/shared/infrastructure/DomainEventBus";
+import { Uuid } from "../../../../../src/contexts/core/shared/domain/Uuid";
+import InvalidArgumentError from "../../../../../src/contexts/core/shared/domain/InvalidArgumentError";
 
 const eventBusMock = {
   subscribe: jest.fn(),
@@ -41,8 +43,10 @@ describe("CreateGeniallyService unit test", () => {
 
     await createGeniallyService.execute(geniallyData);
 
-    const createadGenially = await geniallyRepository.find(geniallyData.id);
-    expect(createadGenially.id).toBe(geniallyData.id);
+    const createadGenially = await geniallyRepository.find(
+      new Uuid(geniallyData.id)
+    );
+    expect(createadGenially.id.value).toBe(geniallyData.id);
     expect(createadGenially.name.name).toBe(geniallyData.name);
     expect(createadGenially.description.description).toBe(
       geniallyData.description
@@ -70,6 +74,17 @@ describe("CreateGeniallyService unit test", () => {
     };
     await expect(createGeniallyService.execute(geniallyData)).rejects.toThrow(
       GeniallyInvalidName
+    );
+  });
+
+  it("should throw an error when id used is not an uuid", async () => {
+    const geniallyData = {
+      id: faker.datatype.string(15),
+      name: faker.datatype.string(5),
+      description: faker.datatype.string(25),
+    };
+    await expect(createGeniallyService.execute(geniallyData)).rejects.toThrow(
+      InvalidArgumentError
     );
   });
 

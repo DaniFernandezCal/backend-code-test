@@ -1,11 +1,12 @@
+import { Uuid } from "../../shared/domain/Uuid";
 import Genially from "./Genially";
 
 interface GeniallyRepository {
   save(genially: Genially): Promise<void>;
 
-  find(id: string): Promise<Genially>;
+  find(id: Uuid): Promise<Genially>;
 
-  delete(id: string): Promise<void>;
+  delete(id: Uuid): Promise<void>;
 }
 
 export default GeniallyRepository;

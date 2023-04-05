@@ -1,8 +1,9 @@
+import { Uuid } from "../../shared/domain/Uuid";
 import GeniallyDescription from "./GeniallyDescription";
 import GeniallyName from "./GeniallyName";
 
 export interface GeniallyDTO {
-  id: string;
+  id: Uuid;
   name: string;
   createdAt: Date;
   description?: string;
@@ -11,7 +12,7 @@ export interface GeniallyDTO {
 }
 
 export default class Genially {
-  private _id: string;
+  private _id: Uuid;
   private _name: GeniallyName;
   private _description: GeniallyDescription;
   private _createdAt: Date;
@@ -19,7 +20,7 @@ export default class Genially {
   private _deletedAt: Date;
 
   constructor(
-    id: string,
+    id: Uuid,
     name: GeniallyName,
     description?: GeniallyDescription,
     createdAt?: Date,
@@ -34,7 +35,7 @@ export default class Genially {
     this._modifiedAt = modifiedAt;
   }
 
-  get id(): string {
+  get id(): Uuid {
     return this._id;
   }
 

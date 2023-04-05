@@ -7,6 +7,7 @@ import GeniallyNotExist from "../../../../../src/contexts/core/genially/domain/G
 import GeniallyName from "../../../../../src/contexts/core/genially/domain/GeniallyName";
 import GeniallyDescription from "../../../../../src/contexts/core/genially/domain/GeniallyDescription";
 import Genially from "../../../../../src/contexts/core/genially/domain/Genially";
+import { Uuid } from "../../../../../src/contexts/core/shared/domain/Uuid";
 
 describe("DeleteGeniallyService unit test", () => {
   let deleteGeniallyService: DeleteGeniallyService;
@@ -19,15 +20,17 @@ describe("DeleteGeniallyService unit test", () => {
 
   it("when genially not exist should throw an error", async () => {
     await expect(
-      deleteGeniallyService.execute("unnexistentGeniallyId")
+      deleteGeniallyService.execute(faker.datatype.uuid())
     ).rejects.toThrow(GeniallyNotExist);
   });
 
   describe("given genially created", () => {
+    let uuid: string;
     let createdGenially: Genially;
     beforeAll(async () => {
+      uuid = faker.datatype.uuid();
       createdGenially = new Genially(
-        faker.datatype.uuid(),
+        new Uuid(uuid),
         new GeniallyName(faker.datatype.string(5)),
         new GeniallyDescription(faker.datatype.string(25))
       );
@@ -35,7 +38,7 @@ describe("DeleteGeniallyService unit test", () => {
     });
 
     it("when genially is removed deletedAt should be setted", async () => {
-      await deleteGeniallyService.execute(createdGenially.id);
+      await deleteGeniallyService.execute(uuid);
       const removedGenially = await geniallyRepository.find(createdGenially.id);
       expect(removedGenially.deletedAt).toBeDefined();
     });

@@ -1,7 +1,8 @@
 import { DomainEvent } from "../../shared/domain/DomainEvent";
+import { Uuid } from "../../shared/domain/Uuid";
 
 export interface GeniallyCreatedEventPayload {
-  id: string;
+  id: Uuid;
   createdAt: Date;
 }
 

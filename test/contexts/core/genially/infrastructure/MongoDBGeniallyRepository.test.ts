@@ -4,6 +4,7 @@ import Genially from "../../../../../src/contexts/core/genially/domain/Genially"
 import GeniallyDescription from "../../../../../src/contexts/core/genially/domain/GeniallyDescription";
 import GeniallyName from "../../../../../src/contexts/core/genially/domain/GeniallyName";
 import MongoDBGeniallyRepository from "../../../../../src/contexts/core/genially/infrastructure/MongoDBGeniallyRepository";
+import { Uuid } from "../../../../../src/contexts/core/shared/domain/Uuid";
 import SharedMongoClient from "../../../../../src/contexts/core/shared/infrastructure/SharedMongoClient";
 
 describe("MongoDBGeniallyRepository integration test", () => {
@@ -22,15 +23,16 @@ describe("MongoDBGeniallyRepository integration test", () => {
   });
 
   it("should be possible to save genially", async () => {
+    const uuid = faker.datatype.uuid();
     const genially = new Genially(
-      faker.datatype.uuid(),
+      new Uuid(uuid),
       new GeniallyName(faker.datatype.string(5)),
       new GeniallyDescription(faker.datatype.string(25))
     );
 
     await mongoDBRepository.save(genially);
     const persistedGenillay = await collection.findOne({ id: genially.id });
-    expect(persistedGenillay.id).toBe(genially.id);
+    expect(persistedGenillay.id.value).toBe(genially.id.value);
     expect(persistedGenillay.name).toBe(genially.name.name);
     expect(persistedGenillay.description).toBe(
       genially.description.description
@@ -39,10 +41,12 @@ describe("MongoDBGeniallyRepository integration test", () => {
 
   describe("given genially cretead", () => {
     let createdGenially: Genially;
+    let uuid: string;
 
     beforeEach(async () => {
+      uuid = faker.datatype.uuid();
       createdGenially = new Genially(
-        faker.datatype.uuid(),
+        new Uuid(uuid),
         new GeniallyName(faker.datatype.string(5)),
         new GeniallyDescription(faker.datatype.string(25))
       );
@@ -51,7 +55,7 @@ describe("MongoDBGeniallyRepository integration test", () => {
 
     it("should be possible to find genially", async () => {
       const obtainedGenially = await mongoDBRepository.find(createdGenially.id);
-      expect(obtainedGenially.id).toBe(createdGenially.id);
+      expect(obtainedGenially.id.value).toBe(createdGenially.id.value);
       expect(obtainedGenially.name.name).toBe(createdGenially.name.name);
       expect(obtainedGenially.description.description).toBe(
         createdGenially.description.description
