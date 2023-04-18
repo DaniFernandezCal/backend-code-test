@@ -5,7 +5,7 @@ import lusca from "lusca";
 
 // Controllers (route handlers)
 import * as healthController from "./controllers/health";
-import CreateGeniallyController from "./controllers/createGeniallyController";
+import CreateGeniallyController from "./controllers/CreateGeniallyController";
 import CreateGeniallyService from "../contexts/core/genially/application/CreateGeniallyService";
 import DeleteGeniallyController from "./controllers/deleteGeniallyController";
 import DeleteGeniallyService from "../contexts/core/genially/application/DeleteGeniallyService";
@@ -16,6 +16,7 @@ import MongoDBGeniallyRepository from "../contexts/core/genially/infrastructure/
 import MongoDBCounterRepository from "../contexts/core/counter/infrastructure/MongoDBCounterRepository";
 import DomainEventBus from "../contexts/core/shared/infrastructure/DomainEventBus";
 import CounterService from "../contexts/core/counter/application/CounterService";
+import container from "./dependency-injection";
 
 const app = express();
 
@@ -26,9 +27,14 @@ const createGeniallyService = new CreateGeniallyService(
   geniallyRepository,
   domainEventBus
 );
-const createGeniallyController = new CreateGeniallyController(
-  createGeniallyService
+// const createGeniallyController = new CreateGeniallyController(
+//   createGeniallyService
+// );
+console.log(container.services);
+const createGeniallyController: CreateGeniallyController = container.get(
+  "api.controllers.CreateGeniallyController"
 );
+console.log(createGeniallyController);
 const deleteGeniallyService = new DeleteGeniallyService(geniallyRepository);
 const deleteGeniallyController = new DeleteGeniallyController(
   deleteGeniallyService
@@ -52,10 +58,7 @@ app.use(lusca.xframe("SAMEORIGIN"));
 app.use(lusca.xssProtection(true));
 // Primary app routes
 app.get("/", healthController.check);
-app.post(
-  "/genially",
-  createGeniallyController.createGenially.bind(createGeniallyController)
-);
+app.post("/genially", createGeniallyController.createGenially);
 app.delete(
   "/genially/:geniallyId",
   deleteGeniallyController.deleteGenially.bind(deleteGeniallyController)

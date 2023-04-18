@@ -1,0 +1,4 @@
+services:
+  api.controllers.CreateGeniallyController:
+    class: ../../controllers/CreateGeniallyController
+    arguments: []

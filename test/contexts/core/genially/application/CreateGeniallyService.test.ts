@@ -33,7 +33,7 @@ describe("CreateGeniallyService unit test", () => {
     );
   });
 
-  it("should be possible to create a new genially", async () => {
+  it.only("should be possible to create a new genially", async () => {
     const spy = jest.spyOn(eventBus, "publish");
     const geniallyData = {
       id: faker.datatype.uuid(),

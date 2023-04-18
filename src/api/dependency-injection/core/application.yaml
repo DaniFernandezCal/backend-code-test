@@ -1,0 +1,7 @@
+services:
+  core.genially.domain.GeniallyRepository:
+    class: ../../../contexts/core/infrastructure/MongoDBGeniallyRepository
+    arguments: []
+  core.genially.application.CreateGeniallyService:
+    class: ../../../contexts/core/application/CreateGeniallyService
+    arguments: ["@core.genially.domain.GeniallyRepository"]
